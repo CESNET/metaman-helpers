@@ -13,13 +13,15 @@ mkdir -p ${DIR_BASE}
 cd ${DIR_BASE}
 
 # Using `new` branch, because `master` is still being used by Jagger
-git clone -b new git@github.com:CESNET/saml-validator
+git clone -b new https://github.com/CESNET/saml-validator
 
-git clone git@github.com:CESNET/metaman-helpers
+git clone https://github.com/CESNET/metaman-helpers
 
 git clone ${DIR_GIT_REMOTE} ${DIR_GIT_REPO}
+cd ${DIR_GIT_REPO}
+git config commit.template .commit-message
 
-cp ${DIR_BASE}/metaman-helpers/{pre-commit,commit-msg} ${DIR_GIT_REPO}/.git/hooks
+ln -s ${DIR_BASE}/metaman-helpers/{pre-commit,commit-msg} ${DIR_GIT_REPO}/.git/hooks
 
 cd ${DIR_BASE}/metaman-helpers
 cp config.example config
