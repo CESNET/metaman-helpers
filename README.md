@@ -1,4 +1,4 @@
-# metaman-hooks
+# metaman-helpers
 
 This repository contains server-side (`update`) and client-side (`pre-commit` and `commit-msg`) Git hooks and a `.gitignore` file for [MetaMan][] which is in development. The hooks depend on [SAML-validator][] to validate SAML metadata against rules of the Czech Academic Identity Federation [eduID.cz][] operated by [CESNET][].
 
