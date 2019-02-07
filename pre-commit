@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+#
+# This client-side script ensures that all metadata in the staging area is
+# valid against SAML-validator. If metadata passes validation, result is
+# displayed in the commit message along with a template for the first line of
+# the commit message, otherwise the result is displayed at the command line.
+#
+
+source $(dirname $0)/../../../metaman-helpers/config
+
+DIR_GIT=$(dirname $0)/../..
+
+DIFFINDEX=`git diff-index --cached --name-only HEAD | grep '\.xml'`
+ENTITYHOSTNAME=`sed -n 's/.*entityID="https\:\/\/\([a-zA-Z.]*\).*".*/\1/p' ${DIFFINDEX}`
+
+TPL_COMMIT=./.commit-message
+TPL_CONTENT=`cat <<EOF
+${USER}: ${ENTITYHOSTNAME} (add|update|delete)
+EOF
+`
+
+echo ${TPL_CONTENT} > ${TPL_COMMIT}
+
+for FILE in `git diff-index --cached --name-only HEAD | grep '\.xml'`; do
+
+    echo -e "\nValidating ${FILE} ..." >> ${TPL_COMMIT}
+
+    php -q -f ${SAML_VALIDATOR}/validate-cli.php ${DIR_GIT}/${FILE} >> ${TPL_COMMIT}
+
+    ERR=$?
+
+    if [ ${ERR} -ne 0 ]; then
+        sed -i -e '1d' ${TPL_COMMIT}
+        cat ${TPL_COMMIT}
+        echo -e "\nValidation(s) failed!\n"
+        exit ${ERR}
+    fi
+
+done
+
+echo -e "\nValidation(s) sucseeded." >> ${TPL_COMMIT}
+
