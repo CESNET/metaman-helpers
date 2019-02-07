@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+#
+# This server-side script forces a commit message format, so Git repository can
+# be used to look through history in a quick way (the first line of the message
+# must comply with a regular expression).
+#
+# It also validates SAML metadata in the form of a XML document (.xml
+# extension) to be valid against SAML-validator.
+#
+
+source $(dirname $0)/../../metaman-helpers/config
+
+OLDREV=$2
+NEWREV=$3
+
+for REV in `git rev-list ${OLDREV}..${NEWREV}`; do
+
+    # Check the commit message format
+    git cat-file commit ${REV} | \
+        sed '1,/^$/d' | \
+        sed '2,$d' | \
+        grep -E "${COMMIT_MSG_REGEX}" &>/dev/null
+
+    ERR=$?
+
+    if [ ${ERR} -ne 0 ]; then
+        echo -e "\nERROR: An incorrect commit message format.\n"
+        echo -e "Example:"
+        echo -e "\$USER: \$HOSTNAME/MESSAGE (add|update|delete)\n"
+        exit ${ERR}
+    fi
+
+    # Validate metadata
+    for FILE in `git show --name-only --pretty=format:'' ${REV} | grep '\.xml'`; do
+
+        echo -e "\nValidating ${FILE} ..."
+
+        git show ${REV}:${FILE} | \
+            php -q -f ${SAML_VALIDATOR}/validate-cli.php
+
+        ERR=$?
+
+        if [ $ERR -ne 0 ]; then
+            echo -e "\nERROR: An error during metadata validation occured.\n"
+            exit $ERR
+        fi
+
+    done
+
+done
+
