@@ -1,0 +1,5 @@
+*~
+*.sw[po]
+.commit-message
+.commit-message-e
+
