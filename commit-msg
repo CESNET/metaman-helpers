@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#
+# This client-side script forces a commit message format, so Git repository can
+# be used to look through history in a quick way (the first line of the message
+# must comply with a regular expression).
+#
+
+source $(dirname $0)/../../../metaman-helpers/config
+
+head -n1 ${1} | \
+    grep -E "${COMMIT_MSG_REGEX}" &>/dev/null
+
+ERR=$?
+
+if [ ${ERR} -ne 0 ]; then
+    echo -e "\nERROR: An incorrect commit message format.\n"
+    echo -e "Example:"
+    echo -e "\$USER: \$HOSTNAME/MESSAGE (add|update|delete)\n"
+    exit ${ERR}
+fi
+
