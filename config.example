@@ -3,5 +3,5 @@
 SAML_VALIDATOR=/path/to/saml-validator/
 
 # Commit message regular expression
-COMMIT_MSG_REGEX="^\w+\: [a-zA-Z0-9\-\+\.\,\ ]{2,} \((add|update|delete)\)"
+COMMIT_MSG_REGEX="^\w+\: [a-zA-Z0-9\-\_\+\.\,\ ]{2,} \((add|update|delete)\)"
 
