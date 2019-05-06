@@ -31,7 +31,7 @@ for REV in `git rev-list ${OLDREV}..${NEWREV}`; do
     fi
 
     # Validate metadata
-    for FILE in `git show --name-only --pretty=format:'' ${REV} | grep '\.xml'`; do
+    for FILE in `git show --name-only --diff-filter=d --pretty=format:'' ${REV} | grep '\.xml'`; do
 
         echo -e "\nValidating ${FILE} ..."
 
