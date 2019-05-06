@@ -11,7 +11,7 @@ source $(dirname $0)/../../../metaman-helpers/config
 DIR_GIT=$(dirname $0)/../..
 
 DIFFINDEX=`git diff-index --cached --name-only HEAD | grep '\.xml'`
-ENTITYHOSTNAME=`sed -n 's/.*entityID="https\:\/\/\([a-zA-Z.]*\).*".*/\1/p' ${DIFFINDEX}`
+ENTITYHOSTNAME=`sed -n 's/.*entityID="https\:\/\/\([a-zA-Z0-9.\-]*\).*".*/\1/p' ${DIFFINDEX}`
 
 TPL_COMMIT=./.commit-message
 TPL_CONTENT=`cat <<EOF
