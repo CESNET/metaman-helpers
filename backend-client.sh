@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 if [ -z ${1} ]; then
     echo -e "\nMissing base directory where to place everything.\n"
     exit 1
