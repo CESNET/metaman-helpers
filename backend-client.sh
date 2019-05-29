@@ -32,7 +32,7 @@ ln -s ${DIR_BASE}/metaman-helpers/{pre-commit,commit-msg} ${DIR_GIT_REPO}/.git/h
 
 cd ${DIR_BASE}/metaman-helpers
 cp config.example config
-sed -i '' -e "s%SAML_VALIDATOR=/path/to/saml-validator/%SAML_VALIDATOR=${DIR_BASE}/saml-validator/%" config
+sed -i -e "s%SAML_VALIDATOR=/path/to/saml-validator/%SAML_VALIDATOR=${DIR_BASE}/saml-validator/%" config
 
 echo -e "\nSet 'user.name', 'user.email' and possibly 'user.signingkey' and 'commit.gpgsign=true'.\n"
 
