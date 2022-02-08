@@ -31,7 +31,7 @@ It is also necessary to clone [SAML-validator][], rename `config.example` to `co
 * `backend-client.sh`
   > A script to build a client's backend so that a local Git repository with SAML metadata is available. It also symlinks hooks, prepares `config` file and clones SAML-validator.
 
-[MetaMan]: https://github.com/JanOppolzer/metaman
+[MetaMan]: https://github.com/JanOppolzer/metaman-laravel
 [SAML-validator]: https://github.com/JanOppolzer/saml-validator
 [eduID.cz]: https://www.eduid.cz
 [CESNET]: https://www.cesnet.cz
